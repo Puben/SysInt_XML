@@ -2,6 +2,7 @@ package employee;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ public class EmployeeParser {
 	
 	public List<Employee> employees;
 	
-	
-     public List<Employee> getData(String filePath) throws ParserConfigurationException,
+
+	public List<Employee> getData(String filePath) throws ParserConfigurationException,
           SAXException, IOException {
 
           DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -66,4 +67,49 @@ public class EmployeeParser {
           
           return employees;
      }
+
+
+	public List<Employee> getOnlineData(InputStream xml) throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        // Load the input XML document, parse it and return an instance of the
+        // Document class.
+        
+        Document document = builder.parse(xml);
+
+        employees = new ArrayList<Employee>();
+        NodeList nodeList = document.getDocumentElement().getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+             Node node = nodeList.item(i);
+
+             if (node.getNodeType() == Node.ELEMENT_NODE) {
+                  Element elem = (Element) node;
+                  
+                  // Get the value of the ID attribute.
+                  String ID = node.getAttributes().getNamedItem("ID").getNodeValue();
+
+                  // Get the value of all sub-elements.
+                  String firstname = elem.getElementsByTagName("Firstname")
+                                      .item(0).getChildNodes().item(0).getNodeValue();
+
+                  String lastname = elem.getElementsByTagName("Lastname").item(0)
+                                      .getChildNodes().item(0).getNodeValue();
+
+                  Integer age = Integer.parseInt(elem.getElementsByTagName("Age")
+                                      .item(0).getChildNodes().item(0).getNodeValue());
+
+                  Double salary = Double.parseDouble(elem.getElementsByTagName("Salary")
+                                      .item(0).getChildNodes().item(0).getNodeValue());
+
+                  employees.add(new Employee(ID, firstname, lastname, age, salary));
+             }
+        }
+        
+        // Print all employees.
+        for (Employee empl : employees)
+             System.out.println(empl.toString());
+        
+        return employees;
+	}
 }

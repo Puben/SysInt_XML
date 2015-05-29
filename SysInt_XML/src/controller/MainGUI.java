@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -448,29 +450,71 @@ private void updatePurchaseTree(List list){
 				if (isset = true) {
 					textField.setEditable(true);
 					String httpInput = textField.getText();
+					
+					/*
+					 * Attempt at getting from internet. Still need to write in the field on the GUI
+					 * */
+					
+					/*
+					String uri = "http://www46.zippyshare.com/d/Wy8Gs2zS/574427/Employees.xml";
 
+					URL url = new URL(uri);
+					HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					connection.setRequestMethod("GET");
+					connection.setRequestProperty("Accept", "application/xml");
+
+					InputStream xml = connection.getInputStream();
+
+					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+					DocumentBuilder db = dbf.newDocumentBuilder();
+					Document doc = db.parse(xml);
+*/
 					try {
-						URL url = new URL(httpInput);
-						// System.out.println(url.toString());
+						System.out.println("Trying");
+						//URL url = new URL(httpInput);
+						//System.out.println(url.toString() + " ,");
 
+						URL url = new URL(httpInput);
+						HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+						connection.setRequestMethod("GET");
+						connection.setRequestProperty("Accept", "application/xml");
+						InputStream xml = connection.getInputStream();
+						System.out.println("Finding parser");
+						
 						if (empRadio.isSelected()) {
 							// Call employee parser
+							System.out.println("emp it is");
+							System.out.println(xml);
 							empParser = new EmployeeParser();
+							
+							//passing InputParse to EmployeeParser class, maybe something else?
+							List<Employee> empList = (List<Employee>) empParser.getOnlineData(xml);
+							consoleTextArea.append(getDate() + " : " +empList.size() + " employees have been loaded \n");
+							updateEmployeeTree(empList);
+							initializeTable(empList);
 
 						} else if (purRadio.isSelected()) {
 							// Call purchase parser
 							purParser = new PurchaseParser();
-
+							System.out.println("pur it is");
 						} else if (bbrRadio.isSelected()) {
 							// Call bbrParser
 							System.out.println("BBR. is selected");
+							
 						}
+						System.out.println("Should have parsed..");
 					} catch (MalformedURLException e) {
 						// it wasn't a URL
 						JOptionPane
 								.showMessageDialog(frame,
 										"Must have the following format: http://[...].*");
 					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParserConfigurationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SAXException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
