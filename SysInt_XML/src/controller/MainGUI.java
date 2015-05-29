@@ -58,7 +58,7 @@ public class MainGUI {
 	private JFrame frame;
 	private JRadioButton httpButton, localButton;
 	private ButtonGroup group, parserGroup;
-	private JTextField httpInputPath;
+	//private JTextField httpInputPath;
 	private JPanel panel;
 	private JTextField textField;
 	public EmployeeParser empParser;
@@ -79,6 +79,9 @@ public class MainGUI {
 	private JTextArea consoleTextArea;
 	private JTree tree;
 	private JScrollPane treeScrollPane;
+	private JLabel search;
+	private JTextField searchTxt;
+	private JButton searchBtn;
 
 	/**
 	 * Launch the application.
@@ -89,7 +92,6 @@ public class MainGUI {
 				try {
 					MainGUI window = new MainGUI();
 					window.frame.setVisible(true);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -131,7 +133,6 @@ public class MainGUI {
 		clearTable();
 		tm = new TableModel();
 		List<Employee> employeeList = (List<Employee>) list;
-		
 		
 		for (Employee emp : employeeList)
 		 tm.addRow(Arrays.asList(emp.getID(), emp.getFirstname(), emp.getLastname(), emp.getAge(), emp.getSalary()));
@@ -352,7 +353,15 @@ private void updatePurchaseTree(List list){
 
 		bbrRadio = new JRadioButton("BBR");
 		parserContainer.add(bbrRadio);
-
+		
+		search = new JLabel("Search: ");
+		searchTxt = new JTextField(10);
+		searchBtn = new JButton("Search");
+		
+		/*
+		JLabel search;
+		private JTextField searchTxt;
+		*/
 		parserGroup.add(empRadio);
 		parserGroup.add(purRadio);
 		parserGroup.add(bbrRadio);
@@ -362,6 +371,9 @@ private void updatePurchaseTree(List list){
 
 		localButton = new JRadioButton("Local");
 		httpContainer.add(localButton);
+		httpContainer.add(search);
+		httpContainer.add(searchTxt);
+		httpContainer.add(searchBtn);
 		group.add(localButton);
 		panel.add(parserContainer);
 		
@@ -424,11 +436,10 @@ private void updatePurchaseTree(List list){
 									"Terrible error! The file is not valid.");
 						}
 					}
-
 				}
-
 			}
 		});
+		
 		goHttp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
@@ -463,9 +474,7 @@ private void updatePurchaseTree(List list){
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
-
 			}
 		});
 		
@@ -476,11 +485,24 @@ private void updatePurchaseTree(List list){
 				boolean isset = httpButton.isSelected();
 				if (isset = true) {
 					textField.setEditable(true);
-
 				}
-
 			}
 		});
+		
+		searchBtn.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (empRadio.isSelected())
+				{
+					System.out.println(tm.searching(searchTxt.getText()));
+					consoleTextArea.append(searchTxt.getText() + "\n");
+				} else if (purRadio.isSelected())
+				{
+					System.out.println(purParser.searching(searchTxt.getText()));
+					consoleTextArea.append(purParser.searching(searchTxt.getText()) + "\n");
+				}
+			}
+		});
 	}
 }

@@ -16,7 +16,6 @@ public class TableModel extends AbstractTableModel
         columnNames.add("Last Name");;
         columnNames.add("Age");
         columnNames.add("Salary");
-
     }
 
     public void addRow(List rowData)
@@ -61,4 +60,49 @@ public class TableModel extends AbstractTableModel
     {
         return getValueAt(0, c).getClass();
     }
+    
+    public String searching(String searchTxt)
+    {
+    	int counts = 0;
+    	boolean number = false;
+    	int searchInt = 0;
+    	try {
+            searchInt = Integer.parseInt(searchTxt);
+            number = true;
+        } catch (NumberFormatException e) {
+        	System.out.println("NumberFormatException in TableModel. The text might not be searching for numbers");
+            //e.printStackTrace();
+        }
+    	
+    	if (!number)
+    	{
+    		for (int i = 1; i <= 2; i++)
+    		{
+    			for (int j = 0; j < data.size(); j++)
+    			{
+    				if (data.get(j).get(i).equals(searchTxt))
+    					
+    				{
+    					counts++;
+    				}
+    			}
+    		}
+    	} else
+    	{
+    		for (int i = 3; i <=4; i++)
+    		{
+    			for (int j = 0; j < data.size(); j++)
+    			{
+    				if (data.get(j).get(i).equals(searchInt))
+    					
+    				{
+    					counts++;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return "Number of occurences: " + counts;
+    }
+    
 }

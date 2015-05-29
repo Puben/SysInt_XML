@@ -5,10 +5,6 @@
  */
 package purchase;
 
-/**
- *
- * @author dcj976
- */
 public class Item {
    private String productName;
    private String quantity;
