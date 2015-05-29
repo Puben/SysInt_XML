@@ -169,6 +169,32 @@ public class MainGUI {
         
 		frame.getContentPane().add(treeContainer);
 		
+		search = new JLabel("Search: ");
+		search.setBounds(10, 517, 49, 16);
+		frame.getContentPane().add(search);
+		searchTxt = new JTextField(10);
+		searchTxt.setBounds(55, 511, 150, 28);
+		frame.getContentPane().add(searchTxt);
+		searchBtn = new JButton("Search");
+		searchBtn.setBounds(203, 512, 85, 29);
+		frame.getContentPane().add(searchBtn);
+		
+		searchBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (empRadio.isSelected())
+				{
+					System.out.println(tm.searching(searchTxt.getText()));
+					consoleTextArea.append(tm.searching(searchTxt.getText()) + "\n");
+				} else if (purRadio.isSelected())
+				{
+					System.out.println(purParser.searching(searchTxt.getText()));
+					consoleTextArea.append(purParser.searching(searchTxt.getText()) + "\n");
+				}
+			}
+		});
+		
 	}
 	
 	private void updateEmployeeTree(List list){
@@ -312,7 +338,7 @@ private void updatePurchaseTree(List list){
 	
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(10, 10, 800, 600);
+		frame.setBounds(10, 10, 800, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Group the radio buttons.
@@ -326,7 +352,7 @@ private void updatePurchaseTree(List list){
 		panel.setLayout(null);
 
 		httpContainer = new JPanel();
-		httpContainer.setBounds(0, 0, 399, 56);
+		httpContainer.setBounds(0, 6, 399, 68);
 		panel.add(httpContainer);
 		httpContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -339,7 +365,7 @@ private void updatePurchaseTree(List list){
 		textField.setColumns(10);
 
 		parserContainer = new JPanel();
-		parserContainer.setBounds(399, 0, 399, 56);
+		parserContainer.setBounds(401, 6, 399, 33);
 		parserContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		newContainer = new JPanel();
@@ -356,10 +382,6 @@ private void updatePurchaseTree(List list){
 		bbrRadio = new JRadioButton("BBR");
 		parserContainer.add(bbrRadio);
 		
-		search = new JLabel("Search: ");
-		searchTxt = new JTextField(10);
-		searchBtn = new JButton("Search");
-		
 		/*
 		JLabel search;
 		private JTextField searchTxt;
@@ -373,9 +395,6 @@ private void updatePurchaseTree(List list){
 
 		localButton = new JRadioButton("Local");
 		httpContainer.add(localButton);
-		httpContainer.add(search);
-		httpContainer.add(searchTxt);
-		httpContainer.add(searchBtn);
 		group.add(localButton);
 		panel.add(parserContainer);
 		
@@ -390,8 +409,6 @@ private void updatePurchaseTree(List list){
 		
 		initializeConsole();
 		initializeTree();
-
-		
 
 		localButton.addActionListener(new ActionListener() {
 
@@ -423,6 +440,7 @@ private void updatePurchaseTree(List list){
 								for (Purchase pur : purList)
 								consoleTextArea.append(purList.size() + " purchase have been loaded \n");
 							    updatePurchaseTree(purList);
+							    clearTable();
 					
 
 							} else if (bbrRadio.isSelected()) {
@@ -529,22 +547,6 @@ private void updatePurchaseTree(List list){
 				boolean isset = httpButton.isSelected();
 				if (isset = true) {
 					textField.setEditable(true);
-				}
-			}
-		});
-		
-		searchBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (empRadio.isSelected())
-				{
-					System.out.println(tm.searching(searchTxt.getText()));
-					consoleTextArea.append(searchTxt.getText() + "\n");
-				} else if (purRadio.isSelected())
-				{
-					System.out.println(purParser.searching(searchTxt.getText()));
-					consoleTextArea.append(purParser.searching(searchTxt.getText()) + "\n");
 				}
 			}
 		});
