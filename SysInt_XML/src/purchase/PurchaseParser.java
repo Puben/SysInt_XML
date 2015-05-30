@@ -110,8 +110,7 @@ public class PurchaseParser {
         
         System.out.println("itemlist: " + itemList);
         
-        //some of this seems weird.. My console prints "5 \n [#text: \n ] \n [item: null]....."
-        //writes a bit more, but nothing of value there. (\n = newline)
+        //printing reasons
             System.out.println(itemList.getLength());
             System.out.println("before loop");
             	for(Node n: asList(itemList)) {

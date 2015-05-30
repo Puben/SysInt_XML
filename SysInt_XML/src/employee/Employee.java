@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package employee;
 
-/**
- *
- * @author dcj976
- */
 public class Employee {
      private String ID;
      private String Firstname;
@@ -68,8 +59,5 @@ public class Employee {
 
 	public void setSalary(double salary) {
 		this.salary = salary;
-	}
-	
-     
-     
+	}   
 }

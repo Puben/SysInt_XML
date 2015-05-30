@@ -48,8 +48,11 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import employee.*;
@@ -470,33 +473,20 @@ private void updatePurchaseTree(List list){
 					String httpInput = textField.getText();
 					
 					/*
-					 * Attempt at getting from internet. Still need to write in the field on the GUI
+					 * Attempt at getting from internet. Still need to write in the field on the GUI.
 					 * */
 					
-					/*
-					String uri = "http://www46.zippyshare.com/d/Wy8Gs2zS/574427/Employees.xml";
-
-					URL url = new URL(uri);
-					HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-					connection.setRequestMethod("GET");
-					connection.setRequestProperty("Accept", "application/xml");
-
-					InputStream xml = connection.getInputStream();
-
-					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-					DocumentBuilder db = dbf.newDocumentBuilder();
-					Document doc = db.parse(xml);
-*/
 					try {
 						System.out.println("Trying");
-						//URL url = new URL(httpInput);
-						//System.out.println(url.toString() + " ,");
-
+						
 						URL url = new URL(httpInput);
 						HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 						connection.setRequestMethod("GET");
 						connection.setRequestProperty("Accept", "application/xml");
 						InputStream xml = connection.getInputStream();
+						DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+						DocumentBuilder db = dbf.newDocumentBuilder();
+						Document doc = db.parse(xml);
 						System.out.println("Finding parser");
 						
 						if (empRadio.isSelected()) {
@@ -506,7 +496,7 @@ private void updatePurchaseTree(List list){
 							empParser = new EmployeeParser();
 							
 							//passing InputParse to EmployeeParser class, maybe something else?
-							List<Employee> empList = (List<Employee>) empParser.getOnlineData(xml);
+							List<Employee> empList = (List<Employee>) empParser.getOnlineData(doc);
 							consoleTextArea.append(getDate() + " : " +empList.size() + " employees have been loaded \n");
 							updateEmployeeTree(empList);
 							initializeTable(empList);

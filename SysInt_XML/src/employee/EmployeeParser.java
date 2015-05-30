@@ -69,16 +69,8 @@ public class EmployeeParser {
      }
 
 
-	public List<Employee> getOnlineData(InputStream xml) throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-
-        // Load the input XML document, parse it and return an instance of the
-        // Document class.
-        
-        Document document = builder.parse(xml);
-
-        employees = new ArrayList<Employee>();
+	public List<Employee> getOnlineData(Document document) throws ParserConfigurationException, SAXException, IOException {
+		employees = new ArrayList<Employee>();
         NodeList nodeList = document.getDocumentElement().getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
              Node node = nodeList.item(i);
