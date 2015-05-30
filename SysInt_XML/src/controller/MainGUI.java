@@ -385,10 +385,6 @@ private void updatePurchaseTree(List list){
 		bbrRadio = new JRadioButton("BBR");
 		parserContainer.add(bbrRadio);
 		
-		/*
-		JLabel search;
-		private JTextField searchTxt;
-		*/
 		parserGroup.add(empRadio);
 		parserGroup.add(purRadio);
 		parserGroup.add(bbrRadio);
